@@ -16,20 +16,20 @@ a `handler` and `code` key.
 using the base parameters.
 
 ```go
-    var start, _ = time.Parse(time.RFC3339, "2024-05-01T00:00:00Z")
-	var end, _ = time.Parse(time.RFC3339, "2024-05-02T00:00:00Z")
+var start, _ = time.Parse(time.RFC3339, "2024-05-01T00:00:00Z")
+var end, _ = time.Parse(time.RFC3339, "2024-05-02T00:00:00Z")
 
-	builder := NewSumMetricSQLBuilder()
-	assert.NotNil(t, builder, "Expected non-nil builder instance")
-	builder.Select("handler", "code")
-	builder.From("otel_metrics_sum")
-	builder.MetricName("prometheus_http_requests_total")
-	builder.Range(start, end)
-	builder.Interval(300)
+builder := NewSumMetricSQLBuilder()
+assert.NotNil(t, builder, "Expected non-nil builder instance")
+builder.Select("handler", "code")
+builder.From("otel_metrics_sum")
+builder.MetricName("prometheus_http_requests_total")
+builder.Range(start, end)
+builder.Interval(300)
 
-	sql, err := builder.Build()
-	assert.Nil(t, err, "Expected error to be nil")
-	fmt.Print(sql)
+sql, err := builder.Build()
+assert.Nil(t, err, "Expected error to be nil")
+fmt.Print(sql)
 ```
 
 ```sql
@@ -71,7 +71,7 @@ You can wrap the base query using a sub-query to allow the use of
 This example shows the side by side comparison with PromQL.
 
 ```sql
-sum(increase({__name__="$metricname"}[5m])) by (handler, code)
+sum(increase({__name__="prometheus_http_requests_total"}[5m])) by (handler, code)
 ```
 
 ```sql
@@ -128,7 +128,6 @@ small subset of data.  The larger the data size the better compression ratio you
 ```sql
 SELECT
     `table`,
-   
     formatReadableSize(sum(data_compressed_bytes)) AS compressed_size,
     formatReadableSize(sum(data_uncompressed_bytes)) AS uncompressed_size,
     round(sum(data_uncompressed_bytes) / sum(data_compressed_bytes), 2) AS ratio
