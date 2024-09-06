@@ -142,3 +142,7 @@ ORDER BY
 |table|compressed_size|uncompressed_size|ratio|
 |-----|---------------|-----------------|-----|
 |otel_metrics_sum|638.82 KiB|99.27 MiB|159.13|
+
+## Additional Documentation
+
+See [docs](./docs/index.md)
